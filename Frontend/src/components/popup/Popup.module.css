@@ -165,7 +165,7 @@
 }
 
 .dltIcon {
-    color: red;
+    color: #cf3636;;
     margin-left: auto;
     padding-right: 0.5rem;
 }
@@ -222,12 +222,30 @@
 }
 .cancel{
     margin-right:1rem;
-    border-color:red;
-    color:red
+    border-color:#cf3636;;
+    color:#cf3636;
 }
 
 .save{
     color:#fff;
     background-color: #17a2b8;
     border-color: #17a2b8;
+}
+
+.calendar_container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Adjust z-index as needed */
+}
+
+.calendar_wrapper {
+    width: 300px; /* Adjust width as needed */
+    height: 300px; /* Adjust height as needed */
+    background-color: white; /* Add any other styling needed */
+    border: 1px solid #ccc; /* Example border */
+    border-radius: 5px; /* Example border radius */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Example box shadow */
+    overflow: hidden; /* Ensure calendar doesn't overflow */
 }
