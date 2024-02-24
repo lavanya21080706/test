@@ -80,6 +80,11 @@
     margin-left: 0.5rem;
 }
 
+.selectedPrior{
+    background-color: #eeecec;
+}
+
+
 .highPriority,
 .mp,
 .lp {
