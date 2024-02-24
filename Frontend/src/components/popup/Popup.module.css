@@ -80,6 +80,22 @@
     margin-left: 0.5rem;
 }
 
+.selectedPrior{
+    background-color: #eeecec;
+}
+/* .priorityOption {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .selected {
+    background-color: #eeecec
+  } */
+
 .highPriority,
 .mp,
 .lp {

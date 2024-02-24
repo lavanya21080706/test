@@ -9,11 +9,17 @@ function PopUp({ onClose }) {
     const [inputFields, setInputFields] = useState([]);
     const [selectedDueDate, setSelectedDueDate] = useState(null); // State to store the selected due date
     const [showCalendar, setShowCalendar] = useState(false);
+    const [selectedPriority, setSelectedPriority] = useState(null);
     
        // Function to handle showing the calendar
        const handleShowCalendar = () => {
         setShowCalendar(true);
     };
+
+    // Function to handle selecting priority
+const handleSelectPriority = (priority) => {
+    setSelectedPriority(priority);
+};
 
     const handleSelectDueDate = (date) => {
         setSelectedDueDate(date); // Update the selected due date
@@ -71,15 +77,15 @@ function PopUp({ onClose }) {
                 <input type='text' placeholder='Enter Task Title' className={styles.taskTitle} />
                 <div className={styles.priorityBox}>
                     <span className={styles.priority}>Select Priority<span className={styles.asterisk}>*</span></span>
-                    <div className={styles.prior}>
+                    <div className={`${styles.prior} ${selectedPriority === 'high' && styles.selectedPrior}`} onClick={() => handleSelectPriority('high')}>
                         <span className={styles.highPriority}></span>
                         <span className={styles.hp}>HIGH PRIORITY</span>
                     </div>
-                    <div className={styles.prior}>
+                    <div className={`${styles.prior} ${selectedPriority === 'moderate' && styles.selectedPrior}`} onClick={() => handleSelectPriority('moderate')}>
                         <span className={styles.mp}></span>
                         <span className={styles.hp}>MODERATE PRIORITY</span>
                     </div>
-                    <div className={styles.prior}>
+                    <div className={`${styles.prior} ${selectedPriority === 'low' && styles.selectedPrior}`} onClick={() => handleSelectPriority('low')}>
                         <span className={styles.lp}></span>
                         <span className={styles.hp}>LOW PRIORITY</span>
                     </div>

@@ -1,29 +1,3 @@
-// import React, { useState } from "react";
-// import CalendarComponent from 'react-calendar'; // aliasing the imported Calendar component
-// import styles from './MyCalendar.module.css';
-
-// function MyCalendar() { // renaming the functional component
-//     const [value, onChange] =  useState(new Date());
-    
-//     // Function to format the date as "MM/DD/YYYY"
-//     const formatDate = (date) => {
-//         return date.toLocaleDateString('en-US', {
-//             month: '2-digit',
-//             day: '2-digit',
-//             year: 'numeric'
-//         });
-//     };
-    
-//     return (
-//         <div className={styles.calendar}>
-//             <CalendarComponent onChange={onChange} value={value} />
-//             <p>{formatDate(value)}</p> 
-//         </div>
-//     );
-// }
-
-// export default MyCalendar;
-
 import React, { useState } from "react";
 import CalendarComponent from 'react-calendar'; // aliasing the imported Calendar component
 import styles from './MyCalendar.module.css';
