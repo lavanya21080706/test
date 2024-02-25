@@ -83,18 +83,7 @@
 .selectedPrior{
     background-color: #eeecec;
 }
-/* .priorityOption {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    margin-right: 10px;
-  }
-  
-  .selected {
-    background-color: #eeecec
-  } */
+
 
 .highPriority,
 .mp,
@@ -190,15 +179,11 @@
     transform: scale(1.5)
 }
 
-.checkBox:checked {
-    background-color: #17a2b8;
-}
-
 .inputContainer {
-    max-height: 150px;
+    max-height: 10rem;
     overflow-y: auto;
     overflow-x: hidden;
-    margin-top: 10px;
+    margin-top: 0.8rem;
 }
 
 .buttons {
@@ -265,3 +250,10 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Example box shadow */
     overflow: hidden; /* Ensure calendar doesn't overflow */
 }
+
+/* CSS for checked checkbox */
+input[type="checkbox"]:checked {
+    /* Blue color */
+    background-color: blue;
+  }
+  

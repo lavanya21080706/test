@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import styles from './Popup.module.css';
 import MyCalendar from '../calendar/MyCalender';
+// import Card from '../../card/Card';
 
 
-function PopUp({ onClose }) { 
+function PopUp({ onClose , onSave}) { 
+    const [valueinput, setValueInput] = useState(null);
+    // let valueinput;
     const [checkedCount, setCheckedCount] = useState(0);
     const [inputFields, setInputFields] = useState([]);
     const [selectedDueDate, setSelectedDueDate] = useState(null); // State to store the selected due date
@@ -20,6 +23,37 @@ function PopUp({ onClose }) {
 const handleSelectPriority = (priority) => {
     setSelectedPriority(priority);
 };
+
+
+const handleSavePopup = () => {
+    // Gather data entered by the user
+    const taskTitle = inputFields[0].value; 
+    const priority = selectedPriority;
+    const checkedInputFields = inputFields.filter(field => field.checked); // Filter out checked input fields
+    const checklist = checkedInputFields.map(field => field.value); 
+    const checklistItems = inputFields.map(field => field.value);
+    const dueDate = selectedDueDate;
+    const vp = checklist;
+
+    // Create an object with the collected data
+    const newData = {
+        title: taskTitle, 
+        priority,
+        checklistItems,
+        dueDate,
+        vp
+    };
+
+    
+    
+
+    // Call the onSave function with the collected data
+    onSave(newData);
+
+    // Close the Popup
+    onClose();
+};
+
 
     const handleSelectDueDate = (date) => {
         setSelectedDueDate(date); // Update the selected due date
@@ -47,16 +81,31 @@ const handleSelectPriority = (priority) => {
     };
 
     // Function to handle checkbox change
-    const handleCheckboxChange = (id, checked) => {
-        const newInputFields = inputFields.map(field => {
-            if (field.id === id) {
-                return { ...field, checked };
-            }
-            return field;
-        });
-        setInputFields(newInputFields);
-        setCheckedCount(newInputFields.filter(field => field.checked).length);
+  // Function to handle checkbox change
+const handleCheckboxChange = (id, checked) => {
+    const newInputFields = inputFields.map(field => {
+        if (field.id === id) {
+            return { ...field, checked };
+        }
+        return field;
+    });
+    setInputFields(newInputFields);
+    setCheckedCount(newInputFields.filter(field => field.checked).length);
+    if (checked) {
+        const inputValue = getInputFieldValueById(id); // Retrieve value of the input field with the given ID
+        setValueInput(inputValue);
+    }
+};
+
+
+    function getInputFieldValueById(id){
+        const inputField = inputFields.find(field => field.id === id);
+        if (inputField) {
+            return inputField.value;
+        }
+        return null; // Return null if input field with given ID is not found
     };
+
 
     // Function to handle deleting input field
     const handleDelete = id => {
@@ -142,7 +191,7 @@ const handleSelectPriority = (priority) => {
                     </button>
                     <div>
                         <button className={styles.cancel} onClick={handleClosePopup}>Cancel</button>
-                        <button className={styles.save}>Save</button>
+                        <button className={styles.save} onClick={handleSavePopup}>Save</button>
                     </div>
                 </div>
                 {showCalendar && (

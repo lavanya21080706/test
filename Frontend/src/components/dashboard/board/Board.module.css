@@ -85,13 +85,14 @@
 .todo,
 .inProgress,
 .done {
-    width: 18vw;
+    width:20vw;
     height:70vh;
     margin: 0 1.5rem 0 0;
     padding: 1rem;
     border-radius:0.7rem;
     background-color: #eef2f5;
     overflow-y: auto;
+    overflow-x: hidden;
     flex-shrink: 0; 
 }
 

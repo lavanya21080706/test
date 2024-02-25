@@ -3,12 +3,14 @@ import React from 'react';
 import styles from './Board.module.css';
 import collapseIcon from '../../../assets/images/collapseIcon.png'
 import plus from '../../../assets/images/plus.png'
-import Popup from '../../popup/Popup';
+import Popup from '../popup/Popup'
+import Card from '../../card/Card'
 
 function Board() {
     const [selectedOption, setSelectedOption] = useState('This Week');
     const [popup, setPopup] = useState(false);
-    // Function to format the date as "12th Jan, 2024"
+    const [cards, setCards] = useState([]);
+
     const getFormattedDate = () => {
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         const currentDate = new Date();
@@ -33,6 +35,10 @@ function Board() {
         return `${day}${ordinalSuffix} ${month}, ${year}`;
     };
 
+    const handleSavePopup = (data) => {
+        setCards([...cards, data]);
+        setPopup(false);
+    };
     const handleClose = () => {
         setPopup(false);
       };
@@ -40,8 +46,6 @@ function Board() {
   const handleClick = () => {
     setPopup(true);
   };
-
-    
 
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
@@ -75,7 +79,23 @@ function Board() {
                         <p className={styles.heading}>To do</p>
                         <img src={plus} alt='plus_icon' className={styles.plus} onClick={handleClick}/>
                         <img src={collapseIcon} alt='collapse_icon' className={styles.collapse} />
-                    </div>
+                        </div>
+                        <div className={styles.cardContainer}>
+                    {cards.map((card, index) => (
+                        <Card
+                            key={index}
+                            priority={card.priority}
+                            title={card.title}
+                            checklistItems={card.checklistItems}
+                            dueDate={card.dueDate}
+                            vp={card.vp}
+                            onMoveToBacklog={() => console.log('Move to backlog')}
+                            onMoveToInProgress={() => console.log('Move to in progress')}
+                            onMoveToDone={() => console.log('Move to done')}
+                        />
+                    ))}
+                </div>
+                  
                 </div>
                 <div className={styles.inProgress}>
                     <div  className={styles.headingSection}>
@@ -90,7 +110,7 @@ function Board() {
                     </div>
                 </div>
             </div>
-            {popup && <Popup onClose={handleClose} />}
+            {popup && <Popup onClose={handleClose} onSave={handleSavePopup} />}
         </div>
     );
 }
