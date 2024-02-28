@@ -8,7 +8,7 @@
 
 .loginText {
   font-family: "Open Sans", sans-serif;
-  font-size: 33.1px;
+  font-size: 2rem;
   margin-top: 7rem;
   margin-bottom: 3rem;
   padding: 0%;
@@ -35,14 +35,14 @@
   width: 30rem;
   height: 4rem;
   margin-top: 0%;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
   margin-left: 2rem;
 }
 
 .email,
 .password {
-  width: 400.4px;
-  height: 50.1px;
+  width: 25rem;
+  height: 3.1rem;
   margin-left: 1rem;
   border: solid #d0d0d0;
   border-radius: 1rem;
@@ -67,7 +67,7 @@
 .passwordContainer {
   position: relative;
   display: inline-block;
-  margin-bottom: 2rem;
+  margin-top: 1rem; 
 }
 
 .lockIcon {
@@ -89,9 +89,9 @@
 .loginButton,
 .registerButton {
   margin-left: 1rem;
-  margin-top: 1rem;
-  width: 470.4px;
-  height: 55.1px;
+  margin-top: 3rem;
+  width: 29.3rem;
+  height: 3.43rem;
   background-color: #17a2b8;
   border: solid white;
   border-radius: 5rem;
@@ -109,10 +109,32 @@
 }
 
 .noAccount {
-  width: 192px;
-  height: 26px;
+  width: 12rem;
+  height: 1.625rem;
   font-family: "Open Sans", sans-serif;
-  font-size: 19.3px;
+  font-size: 1.1rem;
   text-align: left;
   color: #828282;
 }
+
+.error1, .error2{
+  margin:0%;
+  padding:0%;
+  color:red;
+  font-family: "Open Sans", sans-serif;
+  text-align: left;
+  margin-right:auto;
+  margin-left: 1rem;
+}
+
+.error1{
+  margin-left:2rem;
+}
+
+.ps, .em{
+  display: flex;
+  flex-direction: column;
+  margin: 0%;
+  padding: 0%;
+}
+

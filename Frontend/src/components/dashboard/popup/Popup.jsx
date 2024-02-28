@@ -43,10 +43,6 @@ const handleSavePopup = () => {
         dueDate,
         vp
     };
-
-    
-    
-
     // Call the onSave function with the collected data
     onSave(newData);
 

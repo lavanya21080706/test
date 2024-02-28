@@ -3,18 +3,33 @@ import styles from './Card.module.css';
 import dots from '../../assets/images/dots.png';
 import down from '../../assets/images/down.png';
 import up from '../../assets/images/up.png';
+import DeletePopup from '../delete/DeletePopup';
 
-function Card({ priority, title, checklistItems, dueDate, vp, onMoveToBacklog, onMoveToInProgress, onMoveToDone, updateChecklist }) {
+function Card({ priority, title, checklistItems, dueDate, vp, isCollapsed,onMoveToBacklog, onMoveToInProgress, onMoveToDone, updateChecklist }) {
     const formattedDueDate = dueDate ? formatDate(dueDate) : null;
     const [showChecklist, setShowChecklist] = useState(false);
     const [arrowImage, setArrowImage] = useState(down);
     const [checkedCount, setCheckedCount] = useState(0); // State to keep track of checked checkboxes count
+    const [manuallyChecked, setManuallyChecked] = useState(new Set());
+    const [showOptions, setShowOptions] = useState(false);
+    const [showDeletePopup, setShowDeletePopup] = useState(false);
+    
+    useEffect(() => {
+        if (isCollapsed) {
+            setShowChecklist(false);
+            setArrowImage(down);
+        }
+    }, [isCollapsed]);
 
     useEffect(() => {
         let initialCheckedCount = 0;
         checklistItems.forEach(item => {
             if (vp.includes(item)) {
                 initialCheckedCount++;
+                  // Add to manuallyChecked set if it's not in vp array
+                  if (!vp.includes(item)) {
+                    setManuallyChecked(prev => new Set([...prev, item]));
+                }
             }
         });
         setCheckedCount(initialCheckedCount);
@@ -24,20 +39,65 @@ function Card({ priority, title, checklistItems, dueDate, vp, onMoveToBacklog, o
         setShowChecklist(!showChecklist);
         setArrowImage(showChecklist ? down : up);
     };
+    // const toggleChecklist = () => {
+    //     setShowChecklist(prevShowChecklist => !prevShowChecklist);
+    //     setArrowImage(prevArrowImage => prevShowChecklist ? down : up);
+    // };
 
-    // Function to handle checkbox change
-    const handleCheckboxChange = () => {
-        const checkboxes = document.getElementsByClassName(styles.checkBox);
-        let updatedCount = 0;
-        for (let i = 0; i < checkboxes.length; i++) {
-            if (checkboxes[i].checked) {
-                updatedCount++;
-            }
-        }
-        setCheckedCount(updatedCount);
-        updateChecklist(updatedCount); // Update checklist count in parent component
+
+    
+      const handleDelete = () => {
+        // Perform delete operation here
+        setShowDeletePopup(false); // Hide delete popup after deletion
+      };
+    
+      const handleCancelDelete = () => {
+        setShowDeletePopup(false); // Hide delete popup if cancelled
+      };
+
+    const handleOptionClick = (option) => {
+        // Handle option click here
+        console.log(option);
+        if (option === 'Delete') {
+            setShowOptions(false); 
+            setShowDeletePopup(true); // Show delete popup when delete option is clicked
+          }
     };
-
+    
+    
+        const handleCheckboxChange = (item) => {
+        const isChecked = vp.includes(item); // Check if the item is in the vp array
+        if (!isChecked && !manuallyChecked.has(item)) {
+            // Add to manuallyChecked set if it's not in vp array and not already manually checked
+            setManuallyChecked(prev => new Set([...prev, item]));
+            setCheckedCount(prev => prev + 1);
+        } else if (isChecked && manuallyChecked.has(item)) {
+            // Remove from manuallyChecked set if it's in vp array and manually checked
+            setManuallyChecked(prev => {
+                const newSet = new Set(prev);
+                newSet.delete(item);
+                return newSet;
+            });
+            setCheckedCount(prev => prev - 1);
+        } else if (isChecked && !manuallyChecked.has(item)) {
+            // If it's in vp array but not manually checked, do nothing
+            return;
+        } else {
+            // If it's not in vp array and already manually checked, remove from manuallyChecked and update count
+            setManuallyChecked(prev => {
+                const newSet = new Set(prev);
+                newSet.delete(item);
+                return newSet;
+            });
+            setCheckedCount(prev => prev - 1);
+        }
+        updateChecklist(isChecked ? checkedCount : checkedCount + 1);
+    };
+    
+    
+    const toggleOptions = () => {
+        setShowOptions(!showOptions);
+    };
   
     function formatDate(date) {
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -78,10 +138,21 @@ function Card({ priority, title, checklistItems, dueDate, vp, onMoveToBacklog, o
     return (
         <div className={styles.card}>
             <div className={styles.cardHeader}>
+            {showOptions && (
+                <div className={styles.optionsContainer}>
+                    <div className={styles.options}>
+                        <div onClick={() => handleOptionClick('Edit')} className={styles.edit}>Edit</div>
+                        <div onClick={() => handleOptionClick('Share')} className={styles.share}>Share</div>
+                        <div onClick={() => handleOptionClick('Delete')} className={styles.delete}>Delete</div>
+                    </div>
+                    </div>
+                )}
                 <div className={`${styles.color} ${colorClass}`}></div>
                 <span className={styles.priority}>{priority.toUpperCase()} PRIORITY</span>
-                <img src={dots} alt='dots_icon' className={styles.dots} />
+                <img src={dots} alt='dots_icon' className={styles.dots} onClick={toggleOptions} />
+               
             </div>
+           
             <span className={styles.title}>{title}</span>
             <div className={styles.checklist}>
                 <div className={styles.arrow}>
@@ -93,16 +164,15 @@ function Card({ priority, title, checklistItems, dueDate, vp, onMoveToBacklog, o
                 {showChecklist && (
                     <div className={styles.checklistItems}>
                         {checklistItems.map((item, index) => {
-                            // Check if the item exists in the vp array
                             const isChecked = vp.includes(item);
                             return (
                                 <div key={index} className={styles.inputfieldsBox}>
                                     <input
                                         type="checkbox"
                                         className={styles.checkBox}
-                                        id={`checkbox-${index}`} // Unique identifier for each checkbox
-                                        onChange={() => handleCheckboxChange(index)} // Handle checkbox change
-                                        {...(isChecked && { checked: true })} // Conditionally add checked attribute
+                                        id={`checkbox-${index}`}
+                                        onChange={() => handleCheckboxChange(item)}
+                                        checked={isChecked || manuallyChecked.has(item)}
                                     />
                                     <input
                                         type='text'
@@ -112,7 +182,6 @@ function Card({ priority, title, checklistItems, dueDate, vp, onMoveToBacklog, o
                                 </div>
                             );
                         })}
-
                     </div>
                 )}
             </div>
@@ -128,6 +197,9 @@ function Card({ priority, title, checklistItems, dueDate, vp, onMoveToBacklog, o
                     <button onClick={onMoveToDone} className={styles.done}>Done</button>
                 </div>
             </div>
+
+            {showDeletePopup && <DeletePopup onCancel={handleCancelDelete} onDelete={handleDelete}/>}
+
         </div>
     );
 }
